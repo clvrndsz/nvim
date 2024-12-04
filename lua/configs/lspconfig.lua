@@ -16,6 +16,49 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+
+lspconfig.rust_analyzer.setup {
+  -- Server-specific settings. See `:help lspconfig-setup`
+  on_attach =
+  function()
+    if vim.lsp.inlay_hint then
+      vim.lsp.inlay_hint.enable(true, { 0 })
+    end
+  end,
+  settings = {
+    ["rust-analyzer"] = {
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        target = "thumbv7em-none-eabihf",
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true
+      },
+      add_return_type = {
+        enable = true
+      },
+      inlayHints = {
+        smallerHints = true,
+        enable = true,
+        showParameterNames = true,
+        parameterHintsPrefix = "<- ",
+        otherHintsPrefix = "=> ",
+      },
+      checkOnSave = {
+        allTargets = false,
+      },
+    }
+  }
+}
+
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
 --   on_attach = nvlsp.on_attach,
